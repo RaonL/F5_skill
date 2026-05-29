@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F5 LTM Configuration Analyzer - 데모</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, 'Segoe UI', 'Noto Sans KR', sans-serif; background: #f1f5f9; color: #1e293b; }
+
+/* Header */
+.header { background: linear-gradient(135deg, #0057b7 0%, #0ea5e9 100%); color: white; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; }
+.header-left { display: flex; align-items: center; gap: 12px; }
+.header-logo { background: rgba(255,255,255,0.2); border-radius: 10px; padding: 10px; }
+.header-title { font-size: 20px; font-weight: 700; }
+.header-sub { font-size: 13px; opacity: 0.8; }
+.header-right { text-align: right; font-size: 13px; opacity: 0.85; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+
+/* Stats Grid */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.stat-card { background: white; border-radius: 12px; padding: 18px 16px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border-top: 3px solid #0057b7; }
+.stat-card .num { font-size: 30px; font-weight: 800; color: #0057b7; }
+.stat-card .num.warn { color: #dc2626; }
+.stat-card .label { font-size: 12px; color: #64748b; margin-top: 4px; font-weight: 500; }
+.stat-card .icon { font-size: 20px; margin-bottom: 6px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 4px; background: white; border-radius: 12px 12px 0 0; padding: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); overflow-x: auto; }
+.tab-btn { padding: 10px 18px; border: none; background: transparent; font-size: 13px; font-weight: 500; color: #64748b; cursor: pointer; border-radius: 8px; white-space: nowrap; transition: all 0.15s; }
+.tab-btn:hover { background: #f1f5f9; color: #1e293b; }
+.tab-btn.active { background: #0057b7; color: white; }
+
+.tab-content { background: white; border-radius: 0 0 12px 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 20px; min-height: 300px; }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+th { background: #f8fafc; padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #e2e8f0; }
+td { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+tr:hover td { background: #f8fafc; }
+
+/* Badges */
+.badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.bg-green { background: #dcfce7; color: #166534; }
+.bg-red { background: #fee2e2; color: #991b1b; }
+.bg-blue { background: #dbeafe; color: #1e40af; }
+.bg-purple { background: #f3e8ff; color: #6b21a8; }
+.bg-amber { background: #fef3c7; color: #92400e; }
+.bg-gray { background: #f1f5f9; color: #475569; }
+
+/* Cards */
+.card { border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.card-title { font-weight: 600; font-size: 15px; }
+.card-body { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.card-body > div { font-size: 13px; color: #475569; }
+.card-body strong { color: #1e293b; }
+
+/* Members */
+.member { display: flex; align-items: center; gap: 10px; padding: 5px 0; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.dot.up { background: #16a34a; }
+.dot.down { background: #dc2626; }
+.dot.unknown { background: #94a3b8; }
+
+/* Unused */
+.unused-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid #f1f5f9; }
+.unused-item:last-child { border-bottom: none; }
+.unused-reason { margin-left: auto; font-size: 12px; color: #64748b; }
+
+/* Topology */
+#mermaid-container { background: #f8fafc; border-radius: 10px; padding: 20px; min-height: 300px; display: flex; align-items: center; justify-content: center; }
+#mermaid-container svg { max-width: 100%; height: auto; }
+
+/* Sections */
+.section-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; display: flex; align-items: center; gap: 8px; }
+
+.footer { text-align: center; padding: 20px; color: #94a3b8; font-size: 12px; }
+
+@media (max-width: 768px) {
+  .card-body { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .header { flex-direction: column; text-align: center; gap: 8px; }
+  .header-right { text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="header-logo">⚡</div>
+    <div>
+      <div class="header-title">F5 LTM Configuration Analyzer</div>
+      <div class="header-sub">구성 분석 도구 v1.0 — 데모</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div>📄 sample-bigip.conf</div>
+    <div style="font-size:11px">2026-05-28 분석</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ===== STATS ===== -->
+<div class="stats">
+  <div class="stat-card"><div class="icon">🌐</div><div class="num">6</div><div class="label">Virtual Server</div></div>
+  <div class="stat-card"><div class="icon">📦</div><div class="num">6</div><div class="label">Pool</div></div>
+  <div class="stat-card"><div class="icon">🖥️</div><div class="num">12</div><div class="label">Pool Member</div></div>
+  <div class="stat-card"><div class="icon">📊</div><div class="num">5</div><div class="label">Monitor</div></div>
+  <div class="stat-card"><div class="icon">🔐</div><div class="num">5</div><div class="label">Profile</div></div>
+  <div class="stat-card"><div class="icon">🗑️</div><div class="num warn">5</div><div class="label">미사용 Object</div></div>
+</div>
+
+<!-- ===== TABS ===== -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('vs')">🌐 Virtual Server</button>
+  <button class="tab-btn" onclick="switchTab('pools')">📦 Pool</button>
+  <button class="tab-btn" onclick="switchTab('profiles')">🔐 SSL/Profile</button>
+  <button class="tab-btn" onclick="switchTab('unused')">⚠️ 미사용 (5)</button>
+  <button class="tab-btn" onclick="switchTab('topology')">🗺️ 토폴로지</button>
+  <button class="tab-btn" onclick="switchTab('report')">📊 리포트</button>
+</div>
+
+<div class="tab-content">
+
+<!-- ===== TAB: VS ===== -->
+<div id="tab-vs" class="tab-pane active">
+  <div class="section-title">🌐 Virtual Server 목록</div>
+  <table>
+    <tr><th>이름</th><th>Destination</th><th>Pool</th><th>SSL</th><th>Persistence</th><th>상태</th></tr>
+    <tr><td><strong>www-web-vip</strong></td><td>192.168.100.10:80</td><td>www-web-pool</td><td>www-clientssl</td><td>cookie-persistence</td><td><span class="badge bg-green">활성</span></td></tr>
+    <tr><td><strong>www-web-vip-ssl</strong></td><td>192.168.100.11:443</td><td>www-web-pool</td><td>clientssl</td><td>cookie-persistence</td><td><span class="badge bg-green">활성</span></td></tr>
+    <tr><td><strong>api-gateway-vip</strong></td><td>192.168.100.20:8080</td><td>api-server-pool</td><td>api-clientssl</td><td>cookie-persistence</td><td><span class="badge bg-green">활성</span></td></tr>
+    <tr><td><strong>admin-https-vip</strong></td><td>192.168.100.30:443</td><td>admin-server-pool</td><td>clientssl</td><td>-</td><td><span class="badge bg-green">활성</span></td></tr>
+    <tr><td><strong>disabled-old-vip</strong></td><td>192.168.100.50:80</td><td>old-app-pool</td><td>-</td><td>-</td><td><span class="badge bg-red">비활성</span></td></tr>
+    <tr><td><strong>health-check-vip</strong></td><td>10.10.10.10:80</td><td>health-check-pool</td><td>-</td><td>-</td><td><span class="badge bg-green">활성</span></td></tr>
+  </table>
+
+  <div style="margin-top:20px;">
+    <div class="section-title">🔄 VS 상세 정보</div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🌐 www-web-vip</span>
+        <span><span class="badge bg-blue">80/tcp</span> <span class="badge bg-green">활성</span></span>
+      </div>
+      <div class="card-body">
+        <div><strong>Destination:</strong> 192.168.100.10:80</div>
+        <div><strong>Pool:</strong> www-web-pool (3 members)</div>
+        <div><strong>SSL Profile:</strong> www-clientssl (clientside)</div>
+        <div><strong>Persistence:</strong> cookie-persistence</div>
+        <div><strong>SNAT:</strong> automap</div>
+        <div><strong>VLAN:</strong> vlan-external</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🌐 api-gateway-vip</span>
+        <span><span class="badge bg-purple">8080/tcp</span> <span class="badge bg-green">활성</span></span>
+      </div>
+      <div class="card-body">
+        <div><strong>Destination:</strong> 192.168.100.20:8080</div>
+        <div><strong>Pool:</strong> api-server-pool (2 members)</div>
+        <div><strong>SSL Profile:</strong> api-clientssl (clientside)</div>
+        <div><strong>Persistence:</strong> cookie-persistence</div>
+        <div><strong>iRules:</strong> api-rate-limit, http-to-https-redirect</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">🌐 disabled-old-vip</span>
+        <span><span class="badge bg-red">DEPRECATED</span></span>
+      </div>
+      <div class="card-body">
+        <div><strong>Destination:</strong> 192.168.100.50:80</div>
+        <div><strong>Pool:</strong> old-app-pool</div>
+        <div><strong>상태:</strong> <span style="color:#dc2626">⚠️ DISABLED — 더 이상 사용되지 않음</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: POOLS ===== -->
+<div id="tab-pools" class="tab-pane">
+  <div class="section-title">📦 Pool 상세 정보</div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">📦 www-web-pool</span><span class="badge bg-green">2개 VS 연결</span></div>
+    <div class="card-body">
+      <div><strong>LB 방식:</strong> round-robin</div>
+      <div><strong>Monitor:</strong> http-health-monitor</div>
+      <div><strong>연결 VS:</strong> www-web-vip, www-web-vip-ssl</div>
+      <div><strong>Member:</strong> 3개</div>
+    </div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid #f1f5f9">
+      <div class="member"><span class="dot up"></span> <strong>10.10.1.10:80</strong> <span class="badge bg-green">up</span> <span class="badge bg-blue">http-health-monitor</span></div>
+      <div class="member"><span class="dot up"></span> <strong>10.10.1.11:80</strong> <span class="badge bg-green">up</span> <span class="badge bg-blue">http-health-monitor</span></div>
+      <div class="member"><span class="dot down"></span> <strong>10.10.1.12:80</strong> <span class="badge bg-red">down</span> <span class="badge bg-blue">http-health-monitor</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">📦 api-server-pool</span><span class="badge bg-green">1개 VS 연결</span></div>
+    <div class="card-body">
+      <div><strong>LB 방식:</strong> least-connections-member</div>
+      <div><strong>Monitor:</strong> tcp-health-monitor</div>
+      <div><strong>연결 VS:</strong> api-gateway-vip</div>
+      <div><strong>Member:</strong> 2개</div>
+    </div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid #f1f5f9">
+      <div class="member"><span class="dot up"></span> <strong>10.10.2.10:8080</strong> <span class="badge bg-green">up</span> <span class="badge bg-blue">tcp-health-monitor</span></div>
+      <div class="member"><span class="dot up"></span> <strong>10.10.2.11:8080</strong> <span class="badge bg-green">up</span> <span class="badge bg-blue">tcp-health-monitor</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">📦 admin-server-pool</span><span class="badge bg-green">1개 VS 연결</span></div>
+    <div class="card-body">
+      <div><strong>LB 방식:</strong> ratio-member</div>
+      <div><strong>Monitor:</strong> https-health-monitor, tcp-health-monitor</div>
+      <div><strong>연결 VS:</strong> admin-https-vip</div>
+      <div><strong>Member:</strong> 2개</div>
+    </div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid #f1f5f9">
+      <div class="member"><span class="dot up"></span> <strong>10.10.3.10:443</strong> <span class="badge bg-green">up</span></div>
+      <div class="member"><span class="dot up"></span> <strong>10.10.3.11:443</strong> <span class="badge bg-green">up</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">📦 old-app-pool</span><span class="badge bg-amber">1개 VS 연결 (비활성)</span></div>
+    <div class="card-body">
+      <div><strong>LB 방식:</strong> round-robin</div>
+      <div><strong>Monitor:</strong> http-health-monitor</div>
+      <div><strong>연결 VS:</strong> disabled-old-vip (비활성)</div>
+      <div><strong>Member:</strong> 1개</div>
+    </div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid #f1f5f9">
+      <div class="member"><span class="dot up"></span> <strong>10.10.4.10:80</strong> <span class="badge bg-green">up</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">📦 health-check-pool</span><span class="badge bg-green">1개 VS 연결</span></div>
+    <div class="card-body">
+      <div><strong>연결 VS:</strong> health-check-vip</div>
+      <div><strong>Member:</strong> 1개 (127.0.0.1:80 Dummy)</div>
+    </div>
+  </div>
+  <div class="card" style="border-color:#fecaca;background:#fef2f2">
+    <div class="card-header"><span class="card-title">📦 unused-pool ⚠️</span><span class="badge bg-red">미사용</span></div>
+    <div class="card-body">
+      <div><strong>상태:</strong> <span style="color:#dc2626">어떤 Virtual Server에서도 참조하지 않음</span></div>
+      <div><strong>Member:</strong> 1개 (10.10.99.1:80)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: PROFILES ===== -->
+<div id="tab-profiles" class="tab-pane">
+  <div class="section-title">🔐 SSL Profile 분석</div>
+  <table>
+    <tr><th>Profile</th><th>타입</th><th>Context</th><th>연결 VS</th></tr>
+    <tr><td><strong>clientssl</strong></td><td><span class="badge bg-purple">client-ssl</span></td><td><span class="badge bg-blue">clientside</span></td><td>www-web-vip-ssl, admin-https-vip</td></tr>
+    <tr><td><strong>www-clientssl</strong></td><td><span class="badge bg-purple">client-ssl</span></td><td><span class="badge bg-blue">clientside</span></td><td>www-web-vip</td></tr>
+    <tr><td><strong>api-clientssl</strong></td><td><span class="badge bg-purple">client-ssl</span></td><td><span class="badge bg-blue">clientside</span></td><td>api-gateway-vip</td></tr>
+  </table>
+
+  <div style="margin-top:20px">
+    <div class="section-title">🍪 Persistence 분석</div>
+    <table>
+      <tr><th>Persistence</th><th>타입</th><th>연결 VS</th></tr>
+      <tr><td><strong>cookie-persistence</strong></td><td><span class="badge bg-purple">cookie</span></td><td>www-web-vip, www-web-vip-ssl, api-gateway-vip</td></tr>
+      <tr><td><strong>source-addr-persistence-unused</strong></td><td><span class="badge bg-purple">source-addr</span></td><td><span class="badge bg-red">미사용</span></td></tr>
+    </table>
+  </div>
+
+  <div style="margin-top:20px">
+    <div class="section-title">🌍 SNAT 분석</div>
+    <table>
+      <tr><th>SNAT Pool</th><th>Members</th><th>사용 VS</th></tr>
+      <tr><td><strong>global-snat-pool</strong></td><td>192.168.200.100, 192.168.200.101</td><td>automap 사용 (all VS)</td></tr>
+      <tr><td><strong>unused-snat-pool</strong></td><td>192.168.200.200</td><td><span class="badge bg-red">미사용</span></td></tr>
+    </table>
+  </div>
+
+  <div style="margin-top:20px">
+    <div class="section-title">📜 iRule 분석</div>
+    <table>
+      <tr><th>iRule</th><th>연결 VS</th></tr>
+      <tr><td><strong>api-rate-lint</strong></td><td><span class="badge bg-red">미사용</span> (VS는 api-rate-limit 참조 — 이름 불일치)</td></tr>
+      <tr><td><strong>http-to-https-redirect</strong></td><td>api-gateway-vip</td></tr>
+      <tr><td><strong>unused-irule</strong></td><td><span class="badge bg-red">미사용</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ===== TAB: UNUSED ===== -->
+<div id="tab-unused" class="tab-pane">
+  <div class="section-title">⚠️ 미사용 Object 탐지 (5)</div>
+  <p style="color:#64748b;font-size:13px;margin-bottom:14px">아래 Object들은 현재 구성에서 참조되지 않아 정리 대상입니다.</p>
+  <div class="unused-item"><span class="badge bg-red">Pool</span> <strong>unused-pool</strong> <span class="unused-reason">어떤 Virtual Server에서도 참조하지 않음</span></div>
+  <div class="unused-item"><span class="badge bg-red">Monitor</span> <strong>http-monitor-unused</strong> <span class="unused-reason">Pool 또는 Node에서 참조하지 않음</span></div>
+  <div class="unused-item"><span class="badge bg-red">Persistence</span> <strong>source-addr-persistence-unused</strong> <span class="unused-reason">Virtual Server에서 참조하지 않음</span></div>
+  <div class="unused-item"><span class="badge bg-red">SNAT Pool</span> <strong>unused-snat-pool</strong> <span class="unused-reason">Virtual Server에서 참조하지 않음</span></div>
+  <div class="unused-item"><span class="badge bg-red">iRule</span> <strong>api-rate-lint</strong> <span class="unused-reason">Virtual Server에서 참조하지 않음 (VS는 api-rate-limit 참조)</span></div>
+  <div class="unused-item"><span class="badge bg-red">iRule</span> <strong>unused-irule</strong> <span class="unused-reason">Virtual Server에서 참조하지 않음</span></div>
+
+  <div style="margin-top:20px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px;">
+    <div style="font-weight:600;color:#166534;margin-bottom:6px">✅ 정리 제안</div>
+    <div style="font-size:13px;color:#15803d">
+      위 5개의 Object를 제거하면 구성을 간소화할 수 있습니다.<br>
+      특히 <strong>unused-pool</strong>과 <strong>http-monitor-unused</strong>는 불필요한 리소스를 차지하고 있습니다.
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: TOPOLOGY ===== -->
+<div id="tab-topology" class="tab-pane">
+  <div class="section-title">🗺️ 네트워크 토폴로지</div>
+  <div id="mermaid-container">
+    <div class="mermaid" style="width:100%">
+flowchart TB
+  subgraph VS["🌐 Virtual Servers"]
+    VS1["www-web-vip<br/>192.168.100.10:80"]
+    VS2["www-web-vip-ssl<br/>192.168.100.11:443"]
+    VS3["api-gateway-vip<br/>192.168.100.20:8080"]
+    VS4["admin-https-vip<br/>192.168.100.30:443"]
+    VS5["health-check-vip<br/>10.10.10.10:80"]
+    VS6["disabled-old-vip<br/>192.168.100.50:80"]
+  end
+
+  subgraph POOLS["📦 Pools"]
+    P1["www-web-pool<br/>round-robin"]
+    P2["api-server-pool<br/>least-connections"]
+    P3["admin-server-pool<br/>ratio-member"]
+    P4["old-app-pool"]
+    P5["health-check-pool"]
+    P6["unused-pool ⚠️"]
+  end
+
+  subgraph NODES["🖥️ Nodes"]
+    N1["10.10.1.10:80"]
+    N2["10.10.1.11:80"]
+    N3["10.10.1.12:80 ⛔"]
+    N4["10.10.2.10:8080"]
+    N5["10.10.2.11:8080"]
+    N6["10.10.3.10:443"]
+    N7["10.10.3.11:443"]
+    N8["10.10.4.10:80"]
+  end
+
+  VS1 --> P1
+  VS2 --> P1
+  VS3 --> P2
+  VS4 --> P3
+  VS5 --> P5
+  VS6 --> P4
+  P1 --> N1
+  P1 --> N2
+  P1 --> N3
+  P2 --> N4
+  P2 --> N5
+  P3 --> N6
+  P3 --> N7
+  P4 --> N8
+
+  style VS6 fill:#fecaca,stroke:#dc2626
+  style P6 fill:#fecaca,stroke:#dc2626
+  style N3 fill:#fef3c7,stroke:#d97706
+    </div>
+  </div>
+  <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+    <button onclick="downloadSVG()" class="tab-btn" style="background:#f1f5f9;border:1px solid #e2e8f0">💾 SVG 다운로드</button>
+    <span style="font-size:12px;color:#94a3b8;align-self:center">🔍 Ctrl+휠로 확대/축소 가능</span>
+  </div>
+</div>
+
+<!-- ===== TAB: REPORT ===== -->
+<div id="tab-report" class="tab-pane">
+  <div class="section-title">📊 모니터 정보</div>
+  <table>
+    <tr><th>이름</th><th>타입</th><th>Interval</th><th>Timeout</th><th>Send</th><th>Recv</th></tr>
+    <tr><td><strong>http-health-monitor</strong></td><td><span class="badge bg-purple">http</span></td><td>10초</td><td>30초</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">GET /health HTTP/1.1...</td><td>200 OK</td></tr>
+    <tr><td><strong>https-health-monitor</strong></td><td><span class="badge bg-purple">https</span></td><td>10초</td><td>30초</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">GET /health HTTP/1.1...</td><td>200 OK</td></tr>
+    <tr><td><strong>tcp-health-monitor</strong></td><td><span class="badge bg-purple">tcp</span></td><td>5초</td><td>16초</td><td>-</td><td>-</td></tr>
+    <tr><td><strong>icmp-monitor</strong></td><td><span class="badge bg-purple">icmp</span></td><td>5초</td><td>15초</td><td>-</td><td>-</td></tr>
+    <tr style="background:#fef2f2"><td><strong>http-monitor-unused ⚠️</strong></td><td><span class="badge bg-purple">http</span></td><td>10초</td><td>30초</td><td>GET / HTTP/1.0</td><td>Welcome</td></tr>
+  </table>
+
+  <div style="margin-top:20px">
+    <div class="section-title">🖥️ Node 목록</div>
+    <table>
+      <tr><th>이름</th><th>주소</th><th>Monitor</th><th>설명</th><th>Pool 연결</th></tr>
+      <tr><td><strong>10.10.1.10</strong></td><td>10.10.1.10</td><td>icmp-monitor</td><td>Web Server 1</td><td>www-web-pool</td></tr>
+      <tr><td><strong>10.10.1.11</strong></td><td>10.10.1.11</td><td>icmp-monitor</td><td>Web Server 2</td><td>www-web-pool</td></tr>
+      <tr><td><strong>10.10.1.12</strong></td><td>10.10.1.12</td><td>icmp-monitor</td><td>Web Server 3</td><td>www-web-pool ⛔ down</td></tr>
+      <tr><td><strong>10.10.2.10</strong></td><td>10.10.2.10</td><td>-</td><td>API Server 1</td><td>api-server-pool</td></tr>
+      <tr><td><strong>10.10.2.11</strong></td><td>10.10.2.11</td><td>-</td><td>API Server 2</td><td>api-server-pool</td></tr>
+      <tr><td><strong>10.10.3.10</strong></td><td>10.10.3.10</td><td>-</td><td>Admin Server 1</td><td>admin-server-pool</td></tr>
+      <tr><td><strong>10.10.3.11</strong></td><td>10.10.3.11</td><td>-</td><td>Admin Server 2</td><td>admin-server-pool</td></tr>
+    </table>
+  </div>
+
+  <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+    <button onclick="alert('✅ 엑셀(.xlsx) 보고서가 다운로드됩니다.\n\n※ 웹앱에서는 실제 다운로드가 가능합니다.')" class="tab-btn" style="background:#dcfce7;border:1px solid #bbf7d0;color:#166534;font-weight:600;padding:10px 20px">
+      📥 Excel 보고서 다운로드 (.xlsx)
+    </button>
+    <button onclick="window.print()" class="tab-btn" style="background:#dbeafe;border:1px solid #bfdbfe;color:#1e40af;font-weight:600;padding:10px 20px">
+      🖨️ HTML 보고서 출력
+    </button>
+  </div>
+
+  <div style="margin-top:20px;background:#f8fafc;border-radius:10px;padding:16px;font-family:monospace;font-size:12px;line-height:1.8">
+    <div style="font-weight:600;margin-bottom:8px;font-family:sans-serif">📝 텍스트 기반 구성 요약:</div>
+    🌐 www-web-vip (192.168.100.10:80)<br/>
+    &nbsp;&nbsp;└─ 📦 www-web-pool<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ 🖥️ 10.10.1.10:80 [up]<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ 🖥️ 10.10.1.11:80 [up]<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ 🖥️ 10.10.1.12:80 [down]<br/>
+    <br/>
+    🌐 www-web-vip-ssl (192.168.100.11:443)<br/>
+    &nbsp;&nbsp;└─ 📦 www-web-pool<br/>
+    <br/>
+    🌐 api-gateway-vip (192.168.100.20:8080)<br/>
+    &nbsp;&nbsp;└─ 📦 api-server-pool<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ 🖥️ 10.10.2.10:8080 [up]<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ 🖥️ 10.10.2.11:8080 [up]<br/>
+    <br/>
+    🌐 admin-https-vip (192.168.100.30:443)<br/>
+    &nbsp;&nbsp;└─ 📦 admin-server-pool<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ 🖥️ 10.10.3.10:443 [up]<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ 🖥️ 10.10.3.11:443 [up]<br/>
+    <br/>
+    🌐 disabled-old-vip (192.168.100.50:80) ⛔ DISABLED<br/>
+    &nbsp;&nbsp;└─ 📦 old-app-pool<br/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ 🖥️ 10.10.4.10:80 [up]<br/>
+    <br/>
+    🌐 health-check-vip (10.10.10.10:80)<br/>
+    &nbsp;&nbsp;└─ 📦 health-check-pool<br/>
+    <br/>
+    ⚠️ 미사용 Object:<br/>
+    &nbsp;&nbsp;- 📦 unused-pool (10.10.99.1:80)<br/>
+    &nbsp;&nbsp;- 📊 http-monitor-unused<br/>
+    &nbsp;&nbsp;- 🍪 source-addr-persistence-unused<br/>
+    &nbsp;&nbsp;- 🌍 unused-snat-pool<br/>
+    &nbsp;&nbsp;- 📜 api-rate-lint, unused-irule
+  </div>
+</div>
+
+</div><!-- /tab-content -->
+
+<div class="footer">
+  F5 LTM Configuration Analyzer v1.0 | 데모 페이지 | 2026-05-28
+</div>
+
+</div><!-- /container -->
+
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#0057b7',
+    primaryTextColor: '#fff',
+    primaryBorderColor: '#0057b7',
+    lineColor: '#94a3b8',
+    secondaryColor: '#e2e8f0',
+    tertiaryColor: '#f8fafc',
+    fontSize: '12px'
+  }
+});
+
+function switchTab(name) {
+  document.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.querySelector(`.tab-btn[onclick*="'${name}'"]`).classList.add('active');
+}
+
+function downloadSVG() {
+  const svg = document.querySelector('#mermaid-container svg');
+  if (!svg) return alert('토폴로지가 아직 렌더링되지 않았습니다.');
+  const blob = new Blob([svg.outerHTML], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'f5-topology.svg';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
