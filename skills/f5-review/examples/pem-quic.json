@@ -1,0 +1,16 @@
+{
+  "title": "QUIC 버전에 따른 PEM SNI 추출 시험",
+  "environment": "BIG-IP VE 17.1.3.7 · 기본 분류 엔진 · URL 카테고리 필터 규칙 적용",
+  "evidenceSource": "시험자가 공유한 패킷 관찰 및 PEM 로그 요약",
+  "document": {
+    "title": "F5 Bug ID 1824965 · Fix Information",
+    "url": "https://cdn.f5.com/product/bugtracker/ID1824965.html",
+    "scope": "17.1.3.6에서 CLASSIFICATION::sni 추가. 해당 항목은 Q043과 QUIC v1의 동작을 개별적으로 명시하지 않는다."
+  },
+  "rows": [
+    {"target":"Google","protocol":"Q043","packetEvidence":null,"logSni":"google.com","classification":null,"connection":"핸드셰이크 시간 초과"},
+    {"target":"YouTube","protocol":"Q043","packetEvidence":"CHLO SNI = www.youtube.com","logSni":"www.youtube.com","classification":"udp quic youtube","connection":"서버 응답 미관찰, 핸드셰이크 시간 초과"},
+    {"target":"Google","protocol":"QUIC v1","packetEvidence":"SNI 확인","logSni":"","classification":"udp","connection":"HTTP/3 301 응답 수신"},
+    {"target":"YouTube","protocol":"QUIC v1","packetEvidence":"SNI 확인","logSni":"","classification":"udp","connection":"양방향 QUIC 통신 확인"}
+  ]
+}

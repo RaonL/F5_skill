@@ -1,0 +1,112 @@
+[
+  {
+    "id": "myf5",
+    "title": "MyF5",
+    "url": "https://my.f5.com/manage/s/",
+    "kind": "F5 지원 포털",
+    "product": "F5 제품 · 고객 지원",
+    "state": "진입 페이지 본문 미확인",
+    "keywords": "myf5 support 지원 케이스",
+    "checked": "2026-11-09"
+  },
+  {
+    "id": "xc",
+    "title": "Distributed Cloud Technical Knowledge",
+    "url": "https://docs.cloud.f5.com/docs-v2",
+    "kind": "F5 공식 문서",
+    "product": "Distributed Cloud",
+    "state": "문서 목록 확인",
+    "keywords": "XC 분산 클라우드 WAAP",
+    "checked": "2026-11-09"
+  },
+  {
+    "id": "nginx",
+    "title": "F5 NGINX Product Documentation",
+    "url": "https://docs.nginx.com/",
+    "kind": "F5 공식 문서",
+    "product": "NGINX",
+    "state": "문서 목록 확인",
+    "keywords": "엔진엑스 nginx plus load balancing 로드밸런싱",
+    "checked": "2026-11-09"
+  },
+  {
+    "id": "ai-security",
+    "title": "AI Security Documentation",
+    "url": "https://docs.aisecurity.f5.com/",
+    "kind": "F5 공식 문서",
+    "product": "AI Security",
+    "state": "문서 목록 확인",
+    "keywords": "AI 보안 인공지능 API 릴리스",
+    "checked": "2026-11-09"
+  },
+  {
+    "id": "kubernetes",
+    "title": "Kubernetes Documentation",
+    "url": "https://kubernetes.io/docs/home/",
+    "kind": "Kubernetes 프로젝트 공식 문서",
+    "product": "Kubernetes",
+    "state": "문서 목록 확인",
+    "keywords": "쿠버네티스 k8s upstream",
+    "checked": "2026-11-09"
+  },
+  {
+    "id": "cis",
+    "title": "F5 BIG-IP Container Ingress Services",
+    "url": "https://clouddocs.f5.com/containers/latest/",
+    "kind": "F5 공식 문서",
+    "product": "BIG-IP CIS",
+    "state": "본문 일부 확인",
+    "keywords": "CIS 컨테이너 쿠버네티스 Kubernetes OpenShift 오픈시프트",
+    "checked": "2026-11-09",
+    "passage": {
+      "section": "F5 BIG-IP Container Ingress Services",
+      "version": "latest 경로 · 특정 릴리스 미확인",
+      "text": "The F5 BIG-IP Controller for Kubernetes lets you manage your F5 BIG-IP device from Kubernetes or OpenShift using either environment’s native CLI/API."
+    }
+  },
+  {
+    "id": "ngf",
+    "title": "F5 NGINX Gateway Fabric",
+    "url": "https://docs.nginx.com/nginx-gateway-fabric/",
+    "kind": "F5 공식 문서",
+    "product": "NGINX Gateway Fabric",
+    "state": "본문 일부 확인",
+    "keywords": "NGF 게이트웨이 패브릭 Gateway API 데이터 플레인",
+    "checked": "2026-11-09",
+    "passage": {
+      "section": "About",
+      "version": "버전 미지정",
+      "text": "NGINX Gateway Fabric provides an implementation of the Gateway API using NGINX as the data plane."
+    }
+  },
+  {
+    "id": "devcentral",
+    "title": "DevCentral",
+    "url": "https://community.f5.com/",
+    "kind": "커뮤니티",
+    "product": "F5 제품 전반",
+    "state": "커뮤니티 목록 확인",
+    "keywords": "커뮤니티 기술 포럼 community 사례",
+    "checked": "2026-11-09"
+  },
+  {
+    "id": "k12201527",
+    "title": "K12201527 · Overview of F5 security notifications",
+    "url": "https://my.f5.com/s/article/K12201527",
+    "kind": "F5 보안 공지 색인",
+    "product": "F5 제품 전반",
+    "state": "공식 검색 색인에서 제목 확인 · 직접 열람 시 본문 미확인",
+    "keywords": "K12201527 보안 공지 취약점 알림 security notifications",
+    "checked": "2026-11-09"
+  },
+  {
+    "id": "support",
+    "title": "F5 Global Support",
+    "url": "https://www.f5.com/support",
+    "kind": "F5 지원 안내",
+    "product": "F5 제품 전반",
+    "state": "지원 안내 확인",
+    "keywords": "지원 서비스 기술지원 연락처",
+    "checked": "2026-11-09"
+  }
+]

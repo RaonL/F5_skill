@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="775" viewBox="0 0 1480 775" role="img" aria-labelledby="title"><title id="title">F5 기술 검토 시스템 구성도</title><rect width="100%" height="100%" fill="#F9FBFA"/>
+<text x="58" y="84" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="53" font-weight="700" fill="#183748">F5 기술 검토 시스템 구성도</text>
+<text x="60" y="133" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="26" font-weight="400" fill="#49616B">Codex는 스킬에서 검토 지침을 읽고, MCP 서버를 통해 등록된 근거 자료를 조회합니다.</text>
+<line x1="60" y1="163" x2="1420" y2="163" stroke="#C1D2D3" stroke-width="2"/>
+<line x1="282" y1="273" x2="503" y2="273" stroke="#006F68" stroke-width="3"/>
+<polygon points="503.0,273.0 490.4,279.1 490.4,266.9" fill="#006F68"/>
+<text x="393" y="252" text-anchor="middle" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="23" font-weight="700" fill="#006F68">기술 질문</text>
+<line x1="503" y1="352" x2="282" y2="352" stroke="#49616B" stroke-width="3"/>
+<polygon points="282.0,352.0 294.6,345.9 294.6,358.1" fill="#49616B"/>
+<text x="393" y="388" text-anchor="middle" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="23" font-weight="400" fill="#49616B">검토 답변</text>
+<line x1="840" y1="273" x2="1019" y2="273" stroke="#006F68" stroke-width="3"/>
+<polygon points="1019.0,273.0 1006.4,279.1 1006.4,266.9" fill="#006F68"/>
+<text x="929" y="251" text-anchor="middle" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="23" font-weight="700" fill="#006F68">도구 호출</text>
+<line x1="1019" y1="352" x2="840" y2="352" stroke="#49616B" stroke-width="3"/>
+<polygon points="840.0,352.0 852.6,345.9 852.6,358.1" fill="#49616B"/>
+<text x="929" y="388" text-anchor="middle" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="21" font-weight="400" fill="#49616B">검색 결과·본문</text>
+<line x1="670" y1="525" x2="670" y2="408" stroke="#006F68" stroke-width="3"/>
+<polygon points="670.0,408.0 676.1,420.6 663.9,420.6" fill="#006F68"/>
+<text x="688" y="475" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="22" font-weight="700" fill="#006F68">검토 지침</text>
+<line x1="1220" y1="408" x2="1220" y2="525" stroke="#006F68" stroke-width="3"/>
+<polygon points="1220.0,525.0 1213.9,512.4 1226.1,512.4" fill="#006F68"/>
+<polygon points="1220.0,408.0 1226.1,420.6 1213.9,420.6" fill="#006F68"/>
+<text x="1239" y="475" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="22" font-weight="700" fill="#006F68">조회·저장</text>
+<line x1="520" y1="389" x2="407" y2="462" stroke="#49616B" stroke-width="3"/>
+<line x1="407" y1="462" x2="176" y2="462" stroke="#49616B" stroke-width="3"/>
+<line x1="176" y1="462" x2="176" y2="525" stroke="#49616B" stroke-width="3"/>
+<polygon points="176.0,525.0 169.9,512.4 182.1,512.4" fill="#49616B"/>
+<text x="169" y="448" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="22" font-weight="400" fill="#49616B">필요 시 원문 조회</text>
+<rect x="61" y="215" width="221" height="191" rx="18" fill="#FFFFFF" stroke="#C1D2D3" stroke-width="2"/>
+<ellipse cx="171.5" cy="260.5" rx="22.5" ry="22.5" fill="#EBF4F2" stroke="#006F68" stroke-width="3"/>
+<rect x="129" y="290" width="85" height="23" rx="11" fill="#EBF4F2" stroke="#006F68" stroke-width="2"/>
+<text x="171" y="373" text-anchor="middle" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="35" font-weight="700" fill="#183748">사용자</text>
+<rect x="505" y="215" width="333" height="191" rx="18" fill="#183748" stroke="#183748" stroke-width="2"/>
+<text x="672" y="301" text-anchor="middle" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="52" font-weight="700" fill="#FFFFFF">Codex</text>
+<text x="672" y="357" text-anchor="middle" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="23" font-weight="400" fill="#DCEBEF">근거 대조 · 답변 작성</text>
+<rect x="1021" y="215" width="399" height="191" rx="18" fill="#E2F1EE" stroke="#006F68" stroke-width="2"/>
+<text x="1050" y="260" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="23" font-weight="700" fill="#006F68">로컬 MCP 서버</text>
+<text x="1050" y="316" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="42" font-weight="700" fill="#183748">f5-reference</text>
+<text x="1050" y="366" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="23" font-weight="400" fill="#49616B">자료 검색 · 본문 조회 · 등록</text>
+<rect x="60" y="526" width="293" height="172" rx="18" fill="#FFFFFF" stroke="#C1D2D3" stroke-width="2"/>
+<text x="86" y="581" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="29" font-weight="700" fill="#183748">F5 공식 웹 문서</text>
+<text x="86" y="629" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="21" font-weight="400" fill="#49616B">Bug Tracker · TechDocs</text>
+<text x="86" y="667" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="21" font-weight="400" fill="#49616B">제품·버전별 원문 근거</text>
+<rect x="488" y="526" width="370" height="172" rx="18" fill="#FFFFFF" stroke="#006F68" stroke-width="2"/>
+<text x="515" y="578" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="36" font-weight="700" fill="#006F68">f5-review</text>
+<text x="515" y="624" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="23" font-weight="700" fill="#183748">설치된 Codex 스킬</text>
+<text x="515" y="665" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="22" font-weight="400" fill="#49616B">SKILL.md · 사례 비교 기준</text>
+<rect x="1000" y="526" width="420" height="172" rx="18" fill="#FFFFFF" stroke="#006F68" stroke-width="2"/>
+<text x="1027" y="578" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="30" font-weight="700" fill="#006F68">로컬 자료 저장소</text>
+<text x="1027" y="624" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="22" font-weight="400" fill="#49616B">sources.json   기본 출처 목록</text>
+<text x="1027" y="666" text-anchor="start" font-family="Malgun Gothic,Noto Sans KR,sans-serif" font-size="20" font-weight="400" fill="#49616B">SQLite   문서 발췌·시험 자료·승인 이력</text>
+</svg>
